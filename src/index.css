@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: #2b2b2b;
+  background-color: #FFFFFF;
+}
+
+h1, h2, h3, h4, h5, .font-heading {
+  font-family: "Poppins", sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4A437;
+  border-radius: 8px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============ Liquid Glass / Advanced UI system ============ */
+
+:root {
+  --glass-highlight: rgba(255, 255, 255, 0.65);
+}
+
+/* Light liquid-glass surface: for cards sitting on cream/white sections */
+.glass-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.62));
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 1px 1px rgba(255, 255, 255, 0.8) inset,
+    0 8px 30px rgba(122, 30, 30, 0.10);
+}
+
+/* Dark liquid-glass surface: for cards sitting on maroon / photo backgrounds */
+.glass-card-dark {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Frosted navbar shell */
+.glass-nav {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.72));
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border-bottom: 1px solid rgba(212, 164, 55, 0.25);
+}
+
+/* Sheen sweep used on liquid-glass surfaces (::before) */
+.glass-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.35) 42%, transparent 60%);
+  background-size: 220% 220%;
+  background-position: -60% -60%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.glass-sheen:hover::before {
+  opacity: 1;
+  animation: sheenSweep 1.4s ease forwards;
+}
+
+@keyframes sheenSweep {
+  0% { background-position: -60% -60%; }
+  100% { background-position: 140% 140%; }
+}
+
+/* Animated conic-gradient glow border, drop on a card that wants a "signature" ring */
+.glow-ring {
+  position: relative;
+  isolation: isolate;
+}
+.glow-ring::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(from var(--angle, 0deg), #d4a437, #7a1e1e, #e6c36b, #7a1e1e, #d4a437);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  animation: spinAngle 3.2s linear infinite;
+  z-index: -1;
+}
+.glow-ring:hover::before {
+  opacity: 1;
+}
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spinAngle {
+  to { --angle: 360deg; }
+}
+
+/* Shimmer text / button sweep */
+.shimmer-text {
+  background: linear-gradient(100deg, #7a1e1e 20%, #d4a437 45%, #e6c36b 55%, #7a1e1e 80%);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmerMove 5s linear infinite;
+}
+@keyframes shimmerMove {
+  to { background-position: -220% center; }
+}
+
+.shimmer-btn {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-20deg);
+  transition: none;
+}
+.shimmer-btn:hover::after {
+  animation: shimmerSlide 0.9s ease forwards;
+}
+@keyframes shimmerSlide {
+  to { left: 150%; }
+}
+
+/* Ambient floating aurora blobs used behind glass sections */
+@keyframes auroraFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(4%, -6%) scale(1.08); }
+  66% { transform: translate(-5%, 4%) scale(0.96); }
+}
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  animation: auroraFloat 14s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Cursor spotlight overlay used inside interactive cards */
+.card-spotlight {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.group\/tilt:hover .card-spotlight {
+  opacity: 1;
+}
